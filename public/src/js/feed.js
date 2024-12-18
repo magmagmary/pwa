@@ -3,11 +3,11 @@ var createPostArea = document.querySelector('#create-post');
 var closeCreatePostModalButton = document.querySelector('#close-create-post-modal-btn');
 
 function openCreatePostModal() {
-  createPostArea.style.display = 'block';
+  createPostArea.classList.remove('hidden');
 }
 
 function closeCreatePostModal() {
-  createPostArea.style.display = 'none';
+  createPostArea.classList.add('hidden');
 }
 
 shareImageButton.addEventListener('click', openCreatePostModal);
