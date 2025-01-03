@@ -44,6 +44,11 @@
     />
     <meta name="msapplication-TileColor" content="#000000" />
     <meta name="theme-color" content="#333333" />
+
+    <!-- scripts -->
+    <script src="https://cdn.tailwindcss.com" async></script>
+    <script defer src="src/js/material.min.js" async></script>
+    <script src="src/js/app.js" defer></script>
   </head>
   <body>
     <div id="app">
@@ -51,12 +56,11 @@
         <header class="mdl-layout__header">
           <div class="mdl-layout__header-row">
             <!-- Title -->
-            <span class="mdl-layout-title">MagMag PWA</span>
+            <a class="mdl-layout-title text-white" href="/">MagMag PWA</a>
             <!-- Add spacer, to align navigation to the right -->
             <div class="mdl-layout-spacer"></div>
             <!-- Navigation. We hide it in small screens. -->
             <nav class="mdl-navigation mdl-layout--large-screen-only">
-              <a class="mdl-navigation__link" href="/">Feed</a>
               <a class="mdl-navigation__link" href="/settings">Settings</a>
               <div class="p-4">
                 <button
@@ -117,8 +121,5 @@
         </main>
       </div>
     </div>
-
-    <script defer src="src/js/material.min.js"></script>
-    <script src="src/js/app.js"></script>
   </body>
 </html>
