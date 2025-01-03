@@ -10,8 +10,8 @@ const cachedAssets = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
 ];
-const STATIC_CACHE_NAME = "static-v17";
-const DYNAMIC_CACHE_NAME = "dynamic-v5";
+const STATIC_CACHE_NAME = "static-v20";
+const DYNAMIC_CACHE_NAME = "dynamic-v6";
 
 self.addEventListener("install", function (event) {
   console.log("Service Worker: installing.", event);
@@ -78,7 +78,9 @@ self.addEventListener("fetch", function (event) {
           })
           .catch(() => {
             return caches.open(STATIC_CACHE_NAME).then((cache) => {
-              return cache.match("/offline.html");
+              if (event.request.headers.get("accept").includes("text/html")) {
+                return cache.match("/offline.html");
+              }
             });
           });
       }
