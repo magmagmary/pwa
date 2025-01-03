@@ -10,7 +10,7 @@ const cachedAssets = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
 ];
-const STATIC_CACHE_NAME = "static-v3";
+const STATIC_CACHE_NAME = "static-v6";
 const DYNAMIC_CACHE_NAME = "dynamic-v1";
 
 self.addEventListener("install", function (event) {
@@ -63,3 +63,10 @@ self.addEventListener("fetch", function (event) {
     })
   );
 });
+
+// cache only strategy
+// self.addEventListener("fetch", function (event) {
+//   event.respondWith(
+//     caches.match(event.request)
+//   );
+// });
