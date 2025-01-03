@@ -2,7 +2,7 @@
     "name":"Vanilla MagMag PWA",
     "short_name":"MagMag PWA",
     "description":"A complete guide to PWAs.",
-    "start_url":"/index.html",
+    "start_url":"/magmag-pwa",
     "scope":"/",
     "display":"standalone",
     "background_color":"#f0f0f0",
