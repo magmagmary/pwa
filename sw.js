@@ -10,8 +10,8 @@ const cachedAssets = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
 ];
-const STATIC_CACHE_NAME = "static-v7";
-const DYNAMIC_CACHE_NAME = "dynamic-v1";
+const STATIC_CACHE_NAME = "static-v10";
+const DYNAMIC_CACHE_NAME = "dynamic-v3";
 
 self.addEventListener("install", function (event) {
   console.log("Service Worker: installing.", event);
@@ -74,4 +74,20 @@ self.addEventListener("fetch", function (event) {
 // network only strategy
 // self.addEventListener("fetch", function (event) {
 //   event.respondWith(fetch(event.request));
+// });
+
+// network with cache fallback strategy
+// self.addEventListener("fetch", function (event) {
+//   event.respondWith(
+//     fetch(event.request)
+//       .then((res) => {
+//         return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+//           cache.put(event.request.url, res.clone());
+//           return res;
+//         });
+//       })
+//       .catch(() => {
+//         return caches.match(event.request);
+//       })
+//   );
 // });
