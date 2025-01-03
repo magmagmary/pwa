@@ -42,7 +42,15 @@ closeCreatePostModalButton.addEventListener("click", closeCreatePostModal);
 //   }
 // }
 
+function clearCards() {
+  if (sharedMomentsArea.hasChildNodes()) {
+    sharedMomentsArea.removeChild(sharedMomentsArea.lastChild);
+  }
+}
+
 function createCard() {
+  clearCards();
+
   var cardWrapper = document.createElement("div");
   cardWrapper.className =
     "shared-moment-card mdl-card mdl-shadow--2dp mx-auto mt-8";
@@ -74,10 +82,31 @@ function createCard() {
   ******/
 }
 
-fetch("https://httpbin.org/get")
-  .then(function (res) {
-    return res.json();
-  })
-  .then(function () {
-    createCard();
-  });
+(function loadCard() {
+  let networkDataReceived = false;
+  const url = "https://httpbin.org/get";
+
+  fetch(url)
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function () {
+      networkDataReceived = true;
+      createCard();
+    })
+    .catch(function () {});
+
+  if ("caches" in window) {
+    caches
+      .match(url)
+      .then(function (response) {
+        if (response) {
+          return response.json();
+        }
+      })
+      .then(function () {
+        if (networkDataReceived) return;
+        createCard();
+      });
+  }
+})();
