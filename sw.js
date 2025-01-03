@@ -10,7 +10,7 @@ const cachedAssets = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
 ];
-const STATIC_CACHE_NAME = "static-v21";
+const STATIC_CACHE_NAME = "static-v23";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 function trimCache(cacheName, maxItems) {
