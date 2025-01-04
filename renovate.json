@@ -1,0 +1,36 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended"
+	],
+	"rangeStrategy": "pin",
+	"prHeader": "chore(deps): update dependencies",
+	"assignees": [
+		"magmagmary"
+	],
+	"labels": [
+		"dependencies update"
+	],
+	"packageRules": [
+		{
+			"matchUpdateTypes": [
+				"minor",
+				"patch"
+			],
+			"automerge": true
+		},
+		{
+			"matchUpdateTypes": [
+				"pin"
+			],
+			"automerge": false
+		},
+		{
+			"matchUpdateTypes": [
+				"major"
+			],
+			"automerge": false,
+			"groupName": "major updates"
+		}
+	]
+}
