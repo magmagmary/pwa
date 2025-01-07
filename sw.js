@@ -1,17 +1,29 @@
+importScripts("/src/js/idb.js");
+
+const STATIC_CACHE_NAME = "static-v40";
+const DYNAMIC_CACHE_NAME = "dynamic-v7";
+const DATABASE_VERSION = 2;
+const POST_OBJECT_STORE = "posts";
+
 const cachedAssets = [
   "/",
   "/index.html",
   "/offline.html",
   "/src/js/app.js",
   "/src/js/feed.js",
+  "/src/js/idb.js",
   "/src/js/material.min.js",
   "/src/images/main-image.jpg",
   "https://fonts.googleapis.com/css?family=Roboto:400,700",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
 ];
-const STATIC_CACHE_NAME = "static-v28";
-const DYNAMIC_CACHE_NAME = "dynamic-v7";
+
+const dbPromise = idb.open(POST_OBJECT_STORE, DATABASE_VERSION, (db) => {
+  if (!db.objectStoreNames.contains(POST_OBJECT_STORE)) {
+    db.createObjectStore(POST_OBJECT_STORE, { keyPath: "id" });
+  }
+});
 
 function trimCache(cacheName, maxItems) {
   caches.open(cacheName).then((cache) => {
@@ -51,21 +63,28 @@ self.addEventListener("activate", (event) => {
   return self.clients.claim();
 });
 
+// index db approach
 self.addEventListener("fetch", (event) => {
   const url =
     "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
 
   if (event.request.url.indexOf(url) > -1) {
-    // cache then network strategy
     return event.respondWith(
-      caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-        return fetch(event.request)
-          .then((res) => {
-            trimCache(DYNAMIC_CACHE_NAME, 5);
-            cache.put(event.request, res.clone());
-            return res;
-          })
-          .catch(() => {});
+      fetch(event.request).then((res) => {
+        const clonedRes = res.clone();
+
+        clonedRes.json().then((data) => {
+          for (key in data) {
+            dbPromise.then((db) => {
+              const tx = db.transaction(POST_OBJECT_STORE, "readwrite");
+              const store = tx.objectStore(POST_OBJECT_STORE);
+              store.put(data[key]);
+              return tx.complete;
+            });
+          }
+        });
+
+        return res;
       })
     );
   }
@@ -99,6 +118,56 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+// final browser cache api approach
+// self.addEventListener("fetch", (event) => {
+//   const url =
+//     "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
+
+//   if (event.request.url.indexOf(url) > -1) {
+//     // cache then network strategy
+//     return event.respondWith(
+//       caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+//         return fetch(event.request)
+//           .then((res) => {
+//             trimCache(DYNAMIC_CACHE_NAME, 5);
+//             cache.put(event.request, res.clone());
+//             return res;
+//           })
+//           .catch(() => {});
+//       })
+//     );
+//   }
+
+//   // cache only strategy for static assets
+//   if (cachedAssets.includes(event.request.url)) {
+//     return event.respondWith(caches.match(event.request));
+//   }
+
+//   // cache with network fallback strategy
+//   event.respondWith(
+//     caches.match(event.request).then((response) => {
+//       if (response) {
+//         return response;
+//       }
+
+//       return fetch(event.request)
+//         .then((res) => {
+//           return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+//             cache.put(event.request.url, res.clone());
+//             return res;
+//           });
+//         })
+//         .catch(() => {
+//           return caches.open(STATIC_CACHE_NAME).then((cache) => {
+//             if (event.request.headers.get("accept").includes("text/html")) {
+//               return cache.match("/offline.html");
+//             }
+//           });
+//         });
+//     })
+//   );
+// });
 
 // cache only strategy
 // self.addEventListener("fetch", function (event) {
