@@ -10,7 +10,7 @@ const cachedAssets = [
   "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.3.0/material.indigo-pink.min.css",
 ];
-const STATIC_CACHE_NAME = "static-v23";
+const STATIC_CACHE_NAME = "static-v28";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 function trimCache(cacheName, maxItems) {
@@ -23,7 +23,7 @@ function trimCache(cacheName, maxItems) {
   });
 }
 
-self.addEventListener("install", function (event) {
+self.addEventListener("install", (event) => {
   console.log("Service Worker: installing.", event);
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME).then((cache) => {
@@ -34,7 +34,7 @@ self.addEventListener("install", function (event) {
   );
 });
 
-self.addEventListener("activate", function (event) {
+self.addEventListener("activate", (event) => {
   console.log("Service Worker: activating.", event);
   event.waitUntil(
     caches.keys().then((keyList) => {
@@ -51,8 +51,9 @@ self.addEventListener("activate", function (event) {
   return self.clients.claim();
 });
 
-self.addEventListener("fetch", function (event) {
-  const url = "https://httpbin.org/get";
+self.addEventListener("fetch", (event) => {
+  const url =
+    "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
 
   if (event.request.url.indexOf(url) > -1) {
     // cache then network strategy
@@ -79,22 +80,22 @@ self.addEventListener("fetch", function (event) {
     caches.match(event.request).then((response) => {
       if (response) {
         return response;
-      } else {
-        return fetch(event.request)
-          .then((res) => {
-            return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-              cache.put(event.request.url, res.clone());
-              return res;
-            });
-          })
-          .catch(() => {
-            return caches.open(STATIC_CACHE_NAME).then((cache) => {
-              if (event.request.headers.get("accept").includes("text/html")) {
-                return cache.match("/offline.html");
-              }
-            });
-          });
       }
+
+      return fetch(event.request)
+        .then((res) => {
+          return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+            cache.put(event.request.url, res.clone());
+            return res;
+          });
+        })
+        .catch(() => {
+          return caches.open(STATIC_CACHE_NAME).then((cache) => {
+            if (event.request.headers.get("accept").includes("text/html")) {
+              return cache.match("/offline.html");
+            }
+          });
+        });
     })
   );
 });
