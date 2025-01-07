@@ -108,12 +108,42 @@ function createCard(data) {
 function updateUI(data) {
   clearCards();
 
-  for (key in data) {
-    createCard(data[key]);
+  for (post of data) {
+    createCard(post);
   }
 }
 
-(function loadCard() {
+// (function loadCardWithCacheSupport() {
+//   let networkDataReceived = false;
+//   const url =
+//     "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
+
+//   fetch(url)
+//     .then((res) => res.json())
+//     .then((data) => {
+//       console.log("From web", data);
+//       networkDataReceived = true;
+//       updateUI(Object.values(data));
+//     })
+//     .catch(() => {});
+
+//   if ("caches" in window) {
+//     caches
+//       .match(url)
+//       .then((response) => {
+//         if (response) {
+//           return response.json();
+//         }
+//       })
+//       .then((data) => {
+//         console.log("From cache", data);
+//         if (networkDataReceived) return;
+//         updateUI(Object.values(data));
+//       });
+//   }
+// })();
+
+(function loadCardWithIndexDb() {
   let networkDataReceived = false;
   const url =
     "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
@@ -121,22 +151,18 @@ function updateUI(data) {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
+      console.log("From web", data);
       networkDataReceived = true;
-      updateUI(data);
+      updateUI(Object.values(data));
     })
     .catch(() => {});
 
-  if ("caches" in window) {
-    caches
-      .match(url)
-      .then((response) => {
-        if (response) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        if (networkDataReceived) return;
-        updateUI(data);
-      });
+  if ("indexedDB" in window) {
+    readAllData().then((response) => {
+      console.log("From indexedDB", response);
+      if (!networkDataReceived) {
+        updateUI(response);
+      }
+    });
   }
 })();

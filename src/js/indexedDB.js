@@ -15,3 +15,11 @@ const writeData = (data) => {
     return tx.complete;
   });
 };
+
+const readAllData = () => {
+  return dbPromise.then((db) => {
+    const tx = db.transaction(POST_OBJECT_STORE, "readonly");
+    const store = tx.objectStore(POST_OBJECT_STORE);
+    return store.getAll();
+  });
+};
