@@ -32,3 +32,12 @@ const clearAllData = () => {
     return tx.complete;
   });
 };
+
+const deleteItemFromData = (id) => {
+  return dbPromise.then((db) => {
+    const tx = db.transaction(POST_OBJECT_STORE, "readwrite");
+    const store = tx.objectStore(POST_OBJECT_STORE);
+    store.delete(id);
+    return tx.complete;
+  });
+};
