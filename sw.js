@@ -56,6 +56,39 @@ self.addEventListener("activate", (event) => {
   return self.clients.claim();
 });
 
+self.addEventListener("sync", (event) => {
+  console.log("Service Worker: Background syncing", event);
+
+  if (event.tag === "sync-new-posts") {
+    console.log(">>>>Syncing new posts");
+
+    event.waitUntil(
+      readAllData(POST_SYNC_STORE).then((data) => {
+        for (const post of data) {
+          fetch(
+            "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(post),
+            }
+          )
+            .then(() => {
+              console.log("Data sent", post);
+              deleteItemFromData(POST_SYNC_STORE, post.id);
+            })
+            .catch((err) => {
+              console.error("Error while sending data", err);
+            });
+        }
+      })
+    );
+  }
+});
+
 // index db approach
 self.addEventListener("fetch", (event) => {
   const url =
@@ -66,17 +99,17 @@ self.addEventListener("fetch", (event) => {
       fetch(event.request).then((res) => {
         const clonedRes = res.clone();
 
-        // clearAllData()
+        // clearAllData(POST_OBJECT_STORE)
         //   .then(() => clonedRes.json())
         //   .then((data) => {
         //     for (key in data) {
-        //       writeData(data[key]);
+        //       writeData(POST_OBJECT_STORE ,data[key]);
         //     }
         //   });
 
         clonedRes.json().then((data) => {
           for (const key in data) {
-            writeData(data[key]);
+            writeData(POST_OBJECT_STORE, data[key]);
           }
         });
 

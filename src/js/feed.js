@@ -141,7 +141,7 @@ function updateUI(data) {
     .catch(() => {});
 
   if ("indexedDB" in window) {
-    readAllData().then((response) => {
+    readAllData(POST_OBJECT_STORE).then((response) => {
       console.log("From indexedDB", response);
       if (!networkDataReceived) {
         updateUI(response);
