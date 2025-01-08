@@ -1,7 +1,7 @@
 importScripts("/src/js/idb.js");
 importScripts("/src/js/indexedDB.js");
 
-const STATIC_CACHE_NAME = "static-v44";
+const STATIC_CACHE_NAME = "static-v47";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 const cachedAssets = [

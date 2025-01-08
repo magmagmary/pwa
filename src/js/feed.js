@@ -1,22 +1,9 @@
-const shareImageButton = document.querySelector("#share-image-button");
 const showPromptButton = document.querySelector("#prompt-suggestion-button");
 const unregisterServiceWorkerButton = document.querySelector(
   "#unregister-service-worker-button"
 );
 
-const createPostArea = document.querySelector("#create-post");
-const closeCreatePostModalButton = document.querySelector(
-  "#close-create-post-modal-btn"
-);
 const sharedMomentsArea = document.querySelector("#shared-moments");
-
-function openCreatePostModal() {
-  createPostArea.classList.remove("hidden");
-}
-
-function closeCreatePostModal() {
-  createPostArea.classList.add("hidden");
-}
 
 const showPrompt = () => {
   if (deferredPrompt) {
@@ -46,16 +33,12 @@ const unregisterServiceWorker = () => {
   }
 };
 
-shareImageButton.addEventListener("click", openCreatePostModal);
-
 showPromptButton.addEventListener("click", showPrompt);
 
 unregisterServiceWorkerButton.addEventListener(
   "click",
   unregisterServiceWorker
 );
-
-closeCreatePostModalButton.addEventListener("click", closeCreatePostModal);
 
 // Currently not in use, allows to save assets in cache on demand
 // function onSaveButtonClicked() {
