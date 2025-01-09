@@ -3,6 +3,7 @@ const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 
+// the config file is not included in the repo. You should create your own
 const serviceAccount = require("./mgm-pwa-firebase.json");
 
 admin.initializeApp({
