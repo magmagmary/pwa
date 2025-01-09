@@ -24,10 +24,16 @@ window.addEventListener("beforeinstallprompt", (e) => {
 const displayConfirmNotification = (title) => {
   const options = {
     body: "some Random body!",
+    icon: "/src/images/icons/app-icon-96x96.png",
+    image: "/src/images/sf-boat.jpg", // not supported in all devices
+    dir: "ltr",
+    lang: "en-US", // BCP 47
+    vibrate: [100, 50, 200], // vibration, pause, vibration
+    badge: "/src/images/icons/app-icon-96x96.png",
   };
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready.then((sw) => {
-      sw.showNotification("hihi", options);
+      sw.showNotification(title, options);
     });
   }
 };
@@ -37,9 +43,7 @@ const askForNotificationPermission = () => {
     if (result !== "granted") {
       return console.log("No notification permission granted");
     }
-    displayConfirmNotification(
-      "You successfully subscribed to our notification service!"
-    );
+    displayConfirmNotification("You successfully subscribed");
   });
 };
 
