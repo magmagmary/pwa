@@ -1,15 +1,23 @@
 {
-  "name": "magmag-pwa",
-  "version": "1.0.0",
-  "description": "A complete guide to PWAs.",
-  "main": "index.js",
-  "scripts": {
-    "start": "http-server -c-1"
-  },
-  "author": "MagMag Mary",
-  "license": "ISC",
-  "devDependencies": {
-    "http-server": "^14.1.1"
-  },
-  "keywords": ["PWA", "Progressive Web App", "Service Worker", "Web App Manifest" , "IndexedDB", "Dynamic caching"]
+	"name": "magmag-pwa",
+	"version": "1.0.0",
+	"description": "A complete guide to PWAs.",
+	"main": "index.js",
+	"scripts": {
+		"start": "http-server -c-1"
+	},
+	"author": "MagMag Mary",
+	"license": "ISC",
+	"devDependencies": {
+		"http-server": "^14.1.1"
+	},
+	"keywords": [
+		"PWA",
+		"Progressive Web App",
+		"Service Worker",
+		"Web App Manifest",
+		"IndexedDB",
+		"Dynamic caching",
+		"background-sync"
+	]
 }
