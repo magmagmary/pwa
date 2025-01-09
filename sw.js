@@ -223,3 +223,14 @@ self.addEventListener("fetch", (event) => {
 //       })
 //   );
 // });
+
+self.addEventListener("notificationclick", (event) => {
+  const notification = event.notification;
+  const action = event.action;
+
+  if (action === "confirm") {
+    console.log("confirm was chosen");
+
+    notification.close();
+  }
+});

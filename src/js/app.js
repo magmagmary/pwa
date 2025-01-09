@@ -30,6 +30,20 @@ const displayConfirmNotification = (title) => {
     lang: "en-US", // BCP 47
     vibrate: [100, 50, 200], // vibration, pause, vibration
     badge: "src/images/icons/app-icon-96x96.png",
+    tag: "confirm-notification", // to avoid multiple notifications
+    renotify: false, // to make the device vibrate again
+    actions: [
+      {
+        action: "confirm",
+        title: "Okay",
+        icon: "src/images/icons/app-icon-96x96.png",
+      },
+      {
+        action: "cancel",
+        title: "Cancel",
+        icon: "src/images/icons/app-icon-96x96.png",
+      },
+    ],
   };
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready.then((sw) => {
