@@ -22,17 +22,14 @@ const sendData = () => {
     title: titleInput.value,
     location: locationInput.value,
   };
-  fetch(
-    "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(post),
-    }
-  ).then(() => {
+  fetch("https://us-central1-mgm-pwa.cloudfunctions.net/storePost", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(post),
+  }).then(() => {
     console.log("Data sent", titleInput.value, locationInput.value);
     createCard(post);
   });

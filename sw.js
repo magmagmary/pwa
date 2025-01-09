@@ -65,20 +65,18 @@ self.addEventListener("sync", (event) => {
     event.waitUntil(
       readAllData(POST_SYNC_STORE).then((data) => {
         for (const post of data) {
-          fetch(
-            "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-              body: JSON.stringify(post),
-            }
-          )
-            .then(() => {
-              console.log("Data sent", post);
-              deleteItemFromData(POST_SYNC_STORE, post.id);
+          fetch("https://us-central1-mgm-pwa.cloudfunctions.net/storePost", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify(post),
+          })
+            .then((res) => res.json())
+            .then(({ message, id }) => {
+              console.log(message);
+              deleteItemFromData(POST_SYNC_STORE, id);
             })
             .catch((err) => {
               console.error("Error while sending data", err);
