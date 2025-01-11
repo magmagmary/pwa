@@ -4,8 +4,20 @@ const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const webPush = require("web-push");
 const dotenv = require("dotenv");
+const { defineSecret } = require("firebase-functions/params");
 
 dotenv.config();
+
+const env = process.env.NODE_ENV || "development";
+const isDevelopment = env === "development";
+
+const VAPID_PUBLIC_KEY = isDevelopment
+  ? process.env.VAPID_PUBLIC_KEY
+  : defineSecret("VAPID_PUBLIC_KEY").value();
+
+const VAPID_PRIVATE_KEY = isDevelopment
+  ? process.env.VAPID_PRIVATE_KEY
+  : defineSecret("VAPID_PRIVATE_KEY").value();
 
 // the config file is not included in the repo. You should create your own
 const serviceAccount = require("./mgm-pwa-firebase.json");
@@ -24,8 +36,8 @@ exports.storePost = onRequest((request, response) => {
       .then(() => {
         webPush.setVapidDetails(
           "mailto:magmagmary70@gmail.com",
-          process.env.VAPID_PUBLIC_KEY,
-          process.env.VAPID_PRIVATE_KEY
+          VAPID_PUBLIC_KEY,
+          VAPID_PRIVATE_KEY
         );
 
         return admin.database().ref("subscriptions").once("value");
