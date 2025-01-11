@@ -1,7 +1,7 @@
 importScripts("/src/js/idb.js");
 importScripts("/src/js/indexedDB.js");
 
-const STATIC_CACHE_NAME = "static-v47";
+const STATIC_CACHE_NAME = "static-v51";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 const cachedAssets = [
@@ -237,4 +237,24 @@ self.addEventListener("notificationclick", (event) => {
 
 self.addEventListener("notificationclose", (event) => {
   console.log("notification was closed", event);
+});
+
+self.addEventListener("push", (event) => {
+  console.log("Push notification received", event);
+  let data = {
+    title: "New!",
+    content: "Something new happened!",
+  };
+
+  if (event.data) {
+    data = JSON.parse(event.data.text());
+  }
+
+  const notificationOptions = {
+    body: data.content,
+    icon: "/src/images/icons/app-icon-96x96.png",
+    badge: "/src/images/icons/app-icon-96x96.png",
+  };
+
+  self.registration.showNotification(data.title, notificationOptions);
 });

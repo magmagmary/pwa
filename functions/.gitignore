@@ -2,3 +2,4 @@ node_modules/
 *.local
 
 mgm-pwa-firebase.json
+.env

@@ -59,7 +59,7 @@ function clearCards() {
 function createCard(data) {
   const cardWrapper = document.createElement("div");
   cardWrapper.className =
-    "shared-moment-card mdl-card mdl-shadow--2dp mx-auto mt-8";
+    "shared-moment-card mdl-card mdl-shadow--2dp w-[200px]";
   const cardTitle = document.createElement("div");
   cardTitle.className = "mdl-card__title";
   cardTitle.style.backgroundImage = `url(${data.image})`;
