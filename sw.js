@@ -1,8 +1,13 @@
-importScripts("/src/js/idb.js");
-importScripts("/src/js/indexedDB.js");
-importScripts("/src/js/config.js");
+import {
+  readAllData,
+  deleteItemFromData,
+  writeData,
+  clearAllData,
+  POST_OBJECT_STORE,
+} from "./src/js/indexedDB.js";
+import { DATA_BASE_URL, REST_API_URL } from "./src/js/config.js";
 
-const STATIC_CACHE_NAME = "static-v54";
+const STATIC_CACHE_NAME = "static-v55";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 const cachedAssets = [

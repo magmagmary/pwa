@@ -1,15 +1,19 @@
+import { openDB } from "./idb.js";
+
 const DATABASE_VERSION = 2;
 const POST_OBJECT_STORE = "posts";
 const POST_SYNC_STORE = "sync-posts";
 
 const validObjectStore = [POST_OBJECT_STORE, POST_SYNC_STORE];
 
-const dbPromise = idb.open(POST_OBJECT_STORE, DATABASE_VERSION, (db) => {
-  for (const objectStore of validObjectStore) {
-    if (!db.objectStoreNames.contains(objectStore)) {
-      db.createObjectStore(objectStore, { keyPath: "id" });
+const dbPromise = openDB(POST_OBJECT_STORE, DATABASE_VERSION, {
+  upgrade(db) {
+    for (const objectStore of validObjectStore) {
+      if (!db.objectStoreNames.contains(objectStore)) {
+        db.createObjectStore(objectStore, { keyPath: "id" });
+      }
     }
-  }
+  },
 });
 
 const writeData = (objectStore, data) => {
@@ -45,4 +49,12 @@ const deleteItemFromData = (objectStore, id) => {
     store.delete(id);
     return tx.complete;
   });
+};
+export {
+  writeData,
+  readAllData,
+  clearAllData,
+  deleteItemFromData,
+  POST_OBJECT_STORE,
+  POST_SYNC_STORE,
 };

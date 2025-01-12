@@ -1,3 +1,6 @@
+import { readAllData, POST_OBJECT_STORE } from "./indexedDB.js";
+import { DATA_BASE_URL } from "./config.js";
+
 const showPromptButton = document.querySelector("#prompt-suggestion-button");
 const unregisterServiceWorkerButton = document.querySelector(
   "#unregister-service-worker-button"
@@ -91,7 +94,7 @@ function createCard(data) {
 function updateUI(data) {
   clearCards();
 
-  for (post of data) {
+  for (const post of data) {
     createCard(post);
   }
 }

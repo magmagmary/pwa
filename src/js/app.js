@@ -8,7 +8,9 @@ const enableNotificationsButtons = document.querySelectorAll(
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("sw.js")
+    .register("sw.js", {
+      type: "module",
+    })
     .then((reg) => {
       console.log("Service Worker Registered");
     })
@@ -118,7 +120,7 @@ const askForNotificationPermission = () => {
 };
 
 if ("Notification" in window && "serviceWorker" in navigator) {
-  for (button of enableNotificationsButtons) {
+  for (const button of enableNotificationsButtons) {
     button.style.display = "inline-block";
     button.addEventListener("click", askForNotificationPermission);
   }

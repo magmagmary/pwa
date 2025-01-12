@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "A complete guide to PWAs.",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"start": "http-server -c-1"
 	},

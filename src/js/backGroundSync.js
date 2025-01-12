@@ -1,3 +1,5 @@
+import { writeData, POST_SYNC_STORE } from "./indexedDB.js";
+
 const form = document.querySelector("form");
 const titleInput = document.querySelector("#title");
 const locationInput = document.querySelector("#location");
