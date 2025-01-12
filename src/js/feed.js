@@ -98,8 +98,7 @@ function updateUI(data) {
 
 // (function loadCardWithCacheSupport() {
 //   let networkDataReceived = false;
-//   const url =
-//     "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
+//   const url = `${DATA_BASE_URL}/posts.json`;
 
 //   fetch(url)
 //     .then((res) => res.json())
@@ -128,8 +127,7 @@ function updateUI(data) {
 
 (function loadCardWithIndexDb() {
   let networkDataReceived = false;
-  const url =
-    "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
+  const url = `${DATA_BASE_URL}/posts.json`;
 
   fetch(url)
     .then((res) => res.json())

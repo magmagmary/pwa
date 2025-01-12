@@ -1,13 +1,15 @@
 importScripts("/src/js/idb.js");
 importScripts("/src/js/indexedDB.js");
+importScripts("/src/js/config.js");
 
-const STATIC_CACHE_NAME = "static-v51";
+const STATIC_CACHE_NAME = "static-v54";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 const cachedAssets = [
   "/",
   "/index.html",
   "/offline.html",
+  "/src/js/config.js",
   "/src/js/app.js",
   "/src/js/feed.js",
   "/src/js/idb.js",
@@ -65,7 +67,7 @@ self.addEventListener("sync", (event) => {
     event.waitUntil(
       readAllData(POST_SYNC_STORE).then((data) => {
         for (const post of data) {
-          fetch("https://us-central1-mgm-pwa.cloudfunctions.net/storePost", {
+          fetch(`${REST_API_URL}/storePost`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -89,8 +91,7 @@ self.addEventListener("sync", (event) => {
 
 // index db approach
 self.addEventListener("fetch", (event) => {
-  const url =
-    "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
+  const url = `${DATA_BASE_URL}/posts.json`;
 
   if (event.request.url.indexOf(url) > -1) {
     return event.respondWith(
@@ -148,9 +149,7 @@ self.addEventListener("fetch", (event) => {
 
 // final browser cache api approach
 // self.addEventListener("fetch", (event) => {
-//   const url =
-//     "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/posts.json";
-
+//   const url = `${DATA_BASE_URL}/posts.json`;
 //   if (event.request.url.indexOf(url) > -1) {
 //     // cache then network strategy
 //     return event.respondWith(

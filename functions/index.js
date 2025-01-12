@@ -5,6 +5,7 @@ const cors = require("cors")({ origin: true });
 const webPush = require("web-push");
 const dotenv = require("dotenv");
 const { defineSecret } = require("firebase-functions/params");
+const { DATA_BASE_URL } = require("../src/js/config");
 
 dotenv.config();
 
@@ -24,7 +25,7 @@ const serviceAccount = require("./mgm-pwa-firebase.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL: DATA_BASE_URL,
 });
 
 exports.storePost = onRequest((request, response) => {

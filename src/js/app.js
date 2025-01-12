@@ -82,17 +82,14 @@ const configurePushSubscription = () => {
         }
       })
       .then((newSub) => {
-        return fetch(
-          "https://mgm-pwa-default-rtdb.europe-west1.firebasedatabase.app/subscriptions.json",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify(newSub),
-          }
-        );
+        return fetch(`${DATA_BASE_URL}/subscriptions.json`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(newSub),
+        });
       })
       .then((res) => {
         if (res.ok) {

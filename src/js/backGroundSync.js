@@ -22,7 +22,7 @@ const sendData = () => {
     title: titleInput.value,
     location: locationInput.value,
   };
-  fetch("https://us-central1-mgm-pwa.cloudfunctions.net/storePost", {
+  fetch(`${REST_API_URL}/storePost`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
