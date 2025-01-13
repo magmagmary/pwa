@@ -2,7 +2,7 @@ importScripts("/src/js/idb.js");
 importScripts("/src/js/indexedDB.js");
 importScripts("/src/js/config.js");
 
-const STATIC_CACHE_NAME = "static-v54";
+const STATIC_CACHE_NAME = "static-v55";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 const cachedAssets = [
@@ -14,6 +14,8 @@ const cachedAssets = [
   "/src/js/feed.js",
   "/src/js/idb.js",
   "/src/js/material.min.js",
+  "/src/js/backGroundSync.js",
+  "/src/js/indexedDB.js",
   "/src/images/main-image.jpg",
   "https://fonts.googleapis.com/css?family=Roboto:400,700",
   "https://fonts.googleapis.com/icon?family=Material+Icons",
@@ -28,6 +30,18 @@ function trimCache(cacheName, maxItems) {
       }
     });
   });
+}
+
+function isInArray(string, array) {
+  let cachePath;
+
+  if (string.indexOf(self.origin) === 0) {
+    // request targets domain where we serve the page from (i.e. NOT a CDN)
+    cachePath = string.substring(self.origin.length); // take the part of the URL AFTER the domain (e.g. after localhost:8080)
+  } else {
+    cachePath = string; // store the full request (for CDNs)
+  }
+  return array.indexOf(cachePath) > -1;
 }
 
 self.addEventListener("install", (event) => {
@@ -118,7 +132,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // cache only strategy for static assets
-  if (cachedAssets.includes(event.request.url)) {
+  if (isInArray(event.request.url, cachedAssets)) {
     return event.respondWith(caches.match(event.request));
   }
 
