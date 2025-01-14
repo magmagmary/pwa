@@ -91,8 +91,17 @@
         <main class="mdl-layout__content mat-typography">
           <div
             id="create-post"
-            class="fixed w-full min-h-screen overflow-scroll bg-white bottom-0 top-14 text-center hidden z-[100]"
+            class="fixed w-full min-h-screen overflow-scroll bg-white bottom-0 top-14 py-10 text-center hidden z-[100]"
           >
+            <video id="player" class="hidden" autoplay></video>
+            <canvas id="canvas" width="320px" height="240px" class="hidden"></canvas> 
+            <button id="capture-btn" class="m-2mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent">
+              Capture
+            </button>
+            <div id="pick-image" class="hidden" >
+              <h6>Pick Image instead</h6>
+              <input type="file" accept="image/*" id="image-picker" />
+            </div>
             <form class="px-4 w-full lg:border-1 border-slate-300 lg:w-1/2 mt-10 mx-auto" >
               <div
                 class="block my-2 mdl-textfield mdl-js-textfield mdl-textfield--floating-label w-full"
@@ -114,6 +123,16 @@
                   >Location</label
                 >
               </div>
+              <div class="input-section">
+                <button
+                  class="m-2mdl-js-button mdl-button--raised mdl-button--colored mdl-color--accent"
+                  type="button"
+                  id="get-location"
+                >
+                  Get User Location
+                </button>
+                <div class="mdl-spinner mdl-js-spinner is-active" id="location-loader"></div>
+              </div>
               <br />
               <div>
                 <button
@@ -127,7 +146,7 @@
               <br />
               <div>
                 <button
-                  class="m-2mdl-js-button mdl-button--fab"
+                  class="m-2mdl-js-button mdl-button--fab fixed left-10 top-20"
                   id="close-create-post-modal-btn"
                   type="button"
                 >
