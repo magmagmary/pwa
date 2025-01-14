@@ -58,6 +58,7 @@ exports.storePost = onRequest((request, response) => {
               JSON.stringify({
                 title: "New Post",
                 content: "New post added!",
+                openUrl: "/help",
               })
             )
             .catch((err) => logger.error(err));

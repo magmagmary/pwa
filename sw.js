@@ -236,8 +236,21 @@ self.addEventListener("notificationclick", (event) => {
   if (action === "confirm") {
     console.log("confirm was chosen");
 
-    notification.close();
+    return notification.close();
   }
+
+  event.waitUntil(
+    clients.matchAll().then((clients) => {
+      const client = clients.find((cli) => cli.visibilityState === "visible");
+      notification.close();
+      if (client) {
+        client.navigate(notification.data.url);
+        return client.focus();
+      }
+
+      clients.openWindow(notification.data.url);
+    })
+  );
 });
 
 self.addEventListener("notificationclose", (event) => {
@@ -249,6 +262,7 @@ self.addEventListener("push", (event) => {
   let data = {
     title: "New!",
     content: "Something new happened!",
+    openUrl: "/",
   };
 
   if (event.data) {
@@ -259,7 +273,12 @@ self.addEventListener("push", (event) => {
     body: data.content,
     icon: "/src/images/icons/app-icon-96x96.png",
     badge: "/src/images/icons/app-icon-96x96.png",
+    data: {
+      url: data.openUrl,
+    },
   };
 
-  self.registration.showNotification(data.title, notificationOptions);
+  event.waitUntil(
+    self.registration.showNotification(data.title, notificationOptions)
+  );
 });

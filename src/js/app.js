@@ -46,6 +46,9 @@ const displayConfirmNotification = (title, body = "") => {
         icon: "src/images/icons/app-icon-96x96.png",
       },
     ],
+    data: {
+      url: "/help",
+    },
   };
   navigator.serviceWorker.ready.then((sw) => {
     sw.showNotification(title, options);
