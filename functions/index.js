@@ -4,28 +4,28 @@ const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const webPush = require("web-push");
 const dotenv = require("dotenv");
-const { defineSecret } = require("firebase-functions/params");
-const { DATA_BASE_URL } = require("../src/js/config");
 
 dotenv.config();
 
-const env = process.env.NODE_ENV || "development";
-const isDevelopment = env === "development";
-
-const VAPID_PUBLIC_KEY = isDevelopment
-  ? process.env.VAPID_PUBLIC_KEY
-  : defineSecret("VAPID_PUBLIC_KEY").value();
-
-const VAPID_PRIVATE_KEY = isDevelopment
-  ? process.env.VAPID_PRIVATE_KEY
-  : defineSecret("VAPID_PRIVATE_KEY").value();
-
-// the config file is not included in the repo. You should create your own
-const serviceAccount = require("./mgm-pwa-firebase.json");
-
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: DATA_BASE_URL,
+  databaseURL: "http://127.0.0.1:5002?ns=mgm-pwa-default-rtdb",
+});
+
+exports.getPosts = onRequest((request, response) => {
+  cors(request, response, () => {
+    admin
+      .database()
+      .ref("posts")
+      .once("value")
+      .then((snapshot) => {
+        const posts = snapshot.val();
+
+        response.status(200).json(posts);
+      })
+      .catch((error) => {
+        response.status(500).json(error);
+      });
+  });
 });
 
 exports.storePost = onRequest((request, response) => {
@@ -37,8 +37,8 @@ exports.storePost = onRequest((request, response) => {
       .then(() => {
         webPush.setVapidDetails(
           "mailto:magmagmary70@gmail.com",
-          VAPID_PUBLIC_KEY,
-          VAPID_PRIVATE_KEY
+          process.env.VAPID_PUBLIC_KEY,
+          process.env.VAPID_PRIVATE_KEY
         );
 
         return admin.database().ref("subscriptions").once("value");
@@ -65,6 +65,25 @@ exports.storePost = onRequest((request, response) => {
         response.status(201).json({
           message: "post created successfully",
           id: request.body.id,
+        });
+      })
+      .catch((err) =>
+        response.status(500).json({
+          err,
+        })
+      );
+  });
+});
+
+exports.storeSubscription = onRequest((request, response) => {
+  cors(request, response, () => {
+    admin
+      .database()
+      .ref("subscriptions")
+      .push(request.body)
+      .then(() => {
+        response.status(201).json({
+          message: "subscription created successfully",
         });
       })
       .catch((err) =>

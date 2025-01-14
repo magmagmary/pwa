@@ -98,7 +98,7 @@ function updateUI(data) {
 
 // (function loadCardWithCacheSupport() {
 //   let networkDataReceived = false;
-//   const url = `${DATA_BASE_URL}/posts.json`;
+//   const url = generateUrl("getPosts);
 
 //   fetch(url)
 //     .then((res) => res.json())
@@ -127,7 +127,7 @@ function updateUI(data) {
 
 (function loadCardWithIndexDb() {
   let networkDataReceived = false;
-  const url = `${DATA_BASE_URL}/posts.json`;
+  const url = generateUrl("getPosts");
 
   fetch(url)
     .then((res) => res.json())
@@ -142,7 +142,7 @@ function updateUI(data) {
     readAllData(POST_OBJECT_STORE).then((response) => {
       console.log("From indexedDB", response);
       if (!networkDataReceived) {
-        updateUI(response);
+        updateUI(Object.values(response));
       }
     });
   }

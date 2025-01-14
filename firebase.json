@@ -22,16 +22,14 @@
   },
   "emulators": {
     "functions": {
-      "port": 7000
+      "port": 5001
     },
     "database": {
-      "port": 7001
+      "port": 5002,
+      "rules": "database.rules.json"
     },
     "hosting": {
-      "port": 7002
-    },
-    "storage": {
-      "port": 7003
+      "port": 50003
     },
     "ui": {
       "enabled": true

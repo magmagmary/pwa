@@ -15,6 +15,15 @@ const openPostModal = () => {
   createPostArea.classList.remove("hidden");
 };
 
+const uuidv4 = () => {
+  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
+    (
+      +c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+    ).toString(16)
+  );
+};
+
 const sendData = () => {
   const post = {
     id: new Date().toISOString(),
@@ -22,7 +31,7 @@ const sendData = () => {
     title: titleInput.value,
     location: locationInput.value,
   };
-  fetch(`${REST_API_URL}/storePost`, {
+  fetch(generateUrl("storePost"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -45,7 +54,7 @@ const handleSubmit = (event) => {
   if ("serviceWorker" in navigator && "SyncManager" in window) {
     return navigator.serviceWorker.ready.then((sw) => {
       const post = {
-        id: new Date().toISOString(),
+        id: uuidv4(),
         title: titleInput.value,
         location: locationInput.value,
         image: "https://picsum.photos/200/300",

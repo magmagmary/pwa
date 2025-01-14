@@ -3,3 +3,6 @@ node_modules/
 
 mgm-pwa-firebase.json
 .env
+
+database-debug.log
+firebase-debug.log

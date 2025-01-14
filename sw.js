@@ -2,7 +2,7 @@ importScripts("/src/js/idb.js");
 importScripts("/src/js/indexedDB.js");
 importScripts("/src/js/config.js");
 
-const STATIC_CACHE_NAME = "static-v55";
+const STATIC_CACHE_NAME = "static-v57";
 const DYNAMIC_CACHE_NAME = "dynamic-v7";
 
 const cachedAssets = [
@@ -81,7 +81,7 @@ self.addEventListener("sync", (event) => {
     event.waitUntil(
       readAllData(POST_SYNC_STORE).then((data) => {
         for (const post of data) {
-          fetch(`${REST_API_URL}/storePost`, {
+          fetch(generateUrl("storePost"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -105,20 +105,12 @@ self.addEventListener("sync", (event) => {
 
 // index db approach
 self.addEventListener("fetch", (event) => {
-  const url = `${DATA_BASE_URL}/posts.json`;
+  const url = generateUrl("getPosts");
 
   if (event.request.url.indexOf(url) > -1) {
     return event.respondWith(
       fetch(event.request).then((res) => {
         const clonedRes = res.clone();
-
-        // clearAllData(POST_OBJECT_STORE)
-        //   .then(() => clonedRes.json())
-        //   .then((data) => {
-        //     for (key in data) {
-        //       writeData(POST_OBJECT_STORE ,data[key]);
-        //     }
-        //   });
 
         clonedRes.json().then((data) => {
           for (const key in data) {
@@ -163,7 +155,7 @@ self.addEventListener("fetch", (event) => {
 
 // final browser cache api approach
 // self.addEventListener("fetch", (event) => {
-//   const url = `${DATA_BASE_URL}/posts.json`;
+//   const url = generateUrl("getPosts");
 //   if (event.request.url.indexOf(url) > -1) {
 //     // cache then network strategy
 //     return event.respondWith(

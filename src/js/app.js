@@ -82,7 +82,7 @@ const configurePushSubscription = () => {
         }
       })
       .then((newSub) => {
-        return fetch(`${DATA_BASE_URL}/subscriptions.json`, {
+        return fetch(generateUrl("storeSubscription"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -92,9 +92,10 @@ const configurePushSubscription = () => {
         });
       })
       .then((res) => {
-        if (res.ok) {
-          displayConfirmNotification("You successfully subscribe!");
-        }
+        return res.json();
+      })
+      .then((data) => {
+        displayConfirmNotification(data.message);
       })
       .catch((err) => {
         console.error("Error while subscribing", err);
