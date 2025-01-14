@@ -41,3 +41,23 @@ const resetStyles = () => {
   canvas.classList.add("hidden");
   captureBtn.classList.add("hidden");
 };
+
+const takeSnapshot = () => {
+  canvas.classList.remove("hidden");
+  player.classList.add("hidden");
+  captureBtn.classList.add("hidden");
+
+  const context = canvas.getContext("2d");
+  context.drawImage(
+    player,
+    0,
+    0,
+    canvas.width,
+    player.videoHeight / (player.videoWidth / canvas.width)
+  );
+
+  for (const track of player.srcObject.getVideoTracks()) {
+    track.stop();
+  }
+};
+captureBtn.addEventListener("click", takeSnapshot);
