@@ -16,6 +16,7 @@ const cachedAssets = [
   "/src/js/material.min.js",
   "/src/js/backGroundSync.js",
   "/src/js/indexedDB.js",
+  "./src/js/video.js",
   "/src/images/main-image.jpg",
   "https://fonts.googleapis.com/css?family=Roboto:400,700",
   "https://fonts.googleapis.com/icon?family=Material+Icons",

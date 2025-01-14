@@ -8,10 +8,12 @@ const shareImageButton = document.querySelector("#share-image-button");
 const createPostArea = document.querySelector("#create-post");
 
 const closePostModal = () => {
+  resetStyles();
   createPostArea.classList.add("hidden");
 };
 
 const openPostModal = () => {
+  initializeMedia();
   createPostArea.classList.remove("hidden");
 };
 
