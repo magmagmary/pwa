@@ -2,7 +2,7 @@ const locationPicker = document.getElementById("get-location");
 const spinner = document.getElementById("location-loader");
 const locationInput = document.querySelector("#location");
 
-let fetchedLocation;
+let fetchedLocation = { lat: 0, lng: 0 };
 
 const resetLocationStyles = () => {
   locationPicker.classList.remove("hidden");
@@ -29,7 +29,7 @@ const getUserLocation = () => {
       locationInput.value = `San Francisco - ${fetchedLocation.lat}`;
     },
     (error) => {
-      fetchedLocation = null;
+      fetchedLocation = { lat: 0, lng: 0 };
       console.log(error);
       resetLocationStyles();
     },
