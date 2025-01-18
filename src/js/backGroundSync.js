@@ -1,6 +1,5 @@
 const form = document.querySelector("form");
 const titleInput = document.querySelector("#title");
-const locationInput = document.querySelector("#location");
 const closeCreatePostModalButton = document.querySelector(
   "#close-create-post-modal-btn"
 );
@@ -8,12 +7,14 @@ const shareImageButton = document.querySelector("#share-image-button");
 const createPostArea = document.querySelector("#create-post");
 
 const closePostModal = () => {
-  resetStyles();
+  resetVideoStyles();
+  resetLocationStyles();
   createPostArea.classList.add("hidden");
 };
 
 const openPostModal = () => {
   initializeMedia();
+  initializeLocation();
   createPostArea.classList.remove("hidden");
 };
 
@@ -32,6 +33,8 @@ const sendData = () => {
     image: picture,
     title: titleInput.value,
     location: locationInput.value,
+    rawLocationLat: fetchedLocation.lat,
+    rawLocationLng: fetchedLocation.lng,
   };
 
   const formData = new FormData();
@@ -63,6 +66,8 @@ const handleSubmit = (event) => {
         title: titleInput.value,
         location: locationInput.value,
         image: picture,
+        rawLocationLat: fetchedLocation.lat,
+        rawLocationLng: fetchedLocation.lng,
       };
 
       writeData(POST_SYNC_STORE, post)

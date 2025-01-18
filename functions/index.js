@@ -77,6 +77,10 @@ exports.storePost = onRequest((request, response) => {
               image: `http://localhost:9199/v0/b/${BUCKET_NAME}/o/${encodeURIComponent(
                 destination
               )}?alt=media`,
+              rawLocation: {
+                lat: fields.rawLocationLat,
+                lng: fields.rawLocationLng,
+              },
             })
         )
         .then(() => {

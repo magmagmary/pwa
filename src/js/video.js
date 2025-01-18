@@ -51,7 +51,7 @@ const initializeMedia = () => {
     });
 };
 
-const resetStyles = () => {
+const resetVideoStyles = () => {
   imagePickerArea.classList.add("hidden");
   player.classList.add("hidden");
   canvas.classList.add("hidden");
