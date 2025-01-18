@@ -4,6 +4,22 @@ const captureBtn = document.getElementById("capture-btn");
 const imagePicker = document.getElementById("image-picker");
 const imagePickerArea = document.getElementById("pick-image");
 
+let picture;
+
+const dataUrlToBlob = (dataUrl) => {
+  const byteString = atob(dataUrl.split(",")[1]);
+  const mimeString = dataUrl.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+
+  const blob = new Blob([ab], { type: mimeString });
+  return blob;
+};
+
 // write the polyfill for getUserMedia
 const initializeMedia = () => {
   if (!("mediaDevices" in navigator)) {
@@ -59,5 +75,8 @@ const takeSnapshot = () => {
   for (const track of player.srcObject.getVideoTracks()) {
     track.stop();
   }
+
+  picture = dataUrlToBlob(canvas.toDataURL());
 };
+
 captureBtn.addEventListener("click", takeSnapshot);

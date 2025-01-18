@@ -82,13 +82,15 @@ self.addEventListener("sync", (event) => {
     event.waitUntil(
       readAllData(POST_SYNC_STORE).then((data) => {
         for (const post of data) {
+          const formData = new FormData();
+
+          for (const key in post) {
+            formData.append(key, post[key]);
+          }
+
           fetch(generateUrl("storePost"), {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify(post),
+            body: formData,
           })
             .then((res) => res.json())
             .then(({ message, id }) => {

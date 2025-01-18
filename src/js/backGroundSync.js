@@ -28,18 +28,20 @@ const uuidv4 = () => {
 
 const sendData = () => {
   const post = {
-    id: new Date().toISOString(),
-    image: "https://picsum.photos/200/300",
+    id: uuidv4(),
+    image: picture,
     title: titleInput.value,
     location: locationInput.value,
   };
+
+  const formData = new FormData();
+
+  for (const key in post) {
+    formData.append(key, post[key]);
+  }
   fetch(generateUrl("storePost"), {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(post),
+    body: formData,
   }).then(() => {
     console.log("Data sent", titleInput.value, locationInput.value);
     createCard(post);
@@ -47,6 +49,7 @@ const sendData = () => {
 };
 
 const handleSubmit = (event) => {
+  console.log("Form submitted", picture);
   event.preventDefault();
   if (!titleInput.value.trim() || !locationInput.value.trim()) {
     return alert("Please enter valid data!");
@@ -59,7 +62,7 @@ const handleSubmit = (event) => {
         id: uuidv4(),
         title: titleInput.value,
         location: locationInput.value,
-        image: "https://picsum.photos/200/300",
+        image: picture,
       };
 
       writeData(POST_SYNC_STORE, post)
