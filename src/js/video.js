@@ -79,4 +79,16 @@ const takeSnapshot = () => {
   picture = dataUrlToBlob(canvas.toDataURL());
 };
 
+const pickImage = (event) => {
+  const file = event.target.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  picture = file;
+};
+
 captureBtn.addEventListener("click", takeSnapshot);
+
+imagePicker.addEventListener("change", pickImage);
