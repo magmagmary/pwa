@@ -58,6 +58,13 @@ const resetVideoStyles = () => {
   captureBtn.classList.add("hidden");
 };
 
+const closeVideoPlayer = () => {
+  if (player.srcObject)
+    for (const track of player.srcObject.getVideoTracks()) {
+      track.stop();
+    }
+};
+
 const takeSnapshot = () => {
   canvas.classList.remove("hidden");
   player.classList.add("hidden");
@@ -72,9 +79,7 @@ const takeSnapshot = () => {
     player.videoHeight / (player.videoWidth / canvas.width)
   );
 
-  for (const track of player.srcObject.getVideoTracks()) {
-    track.stop();
-  }
+  closeVideoPlayer();
 
   picture = dataUrlToBlob(canvas.toDataURL());
 };

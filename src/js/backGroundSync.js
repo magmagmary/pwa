@@ -7,6 +7,7 @@ const shareImageButton = document.querySelector("#share-image-button");
 const createPostArea = document.querySelector("#create-post");
 
 const closePostModal = () => {
+  closeVideoPlayer();
   resetVideoStyles();
   resetLocationStyles();
   createPostArea.classList.add("hidden");
