@@ -19,5 +19,8 @@
 		"IndexedDB",
 		"Dynamic caching",
 		"background-sync"
-	]
+	],
+	"dependencies": {
+		"workbox-cli": "^7.3.0"
+	}
 }
