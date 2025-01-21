@@ -10,7 +10,7 @@
     "web-push": "web-push generate-vapid-keys"
   },
   "engines": {
-    "node": "22.13.0"
+    "node": "22.13.1"
   },
   "main": "index.js",
   "dependencies": {
