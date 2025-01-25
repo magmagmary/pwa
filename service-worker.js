@@ -1,6 +1,12 @@
 importScripts("workbox-sw.prod.v2.1.3.js");
 
 const workboxSW = new self.WorkboxSW();
+workboxSW.router.registerRoute(
+  /.*(googleapis|gstatic)\.com/,
+  workboxSW.strategies.staleWhileRevalidate({
+    cacheName: "google-fonts",
+  }) // cache then network
+);
 workboxSW.precache([
   {
     "url": "index.html",
@@ -133,10 +139,6 @@ workboxSW.precache([
   {
     "url": "src/js/video.js",
     "revision": "7c63b402c2fdd4d866b80e8370775f70"
-  },
-  {
-    "url": "sw-base.js",
-    "revision": "cafd1eb35d564be883da2fef86a41e14"
   },
   {
     "url": "sw.js",

@@ -9,5 +9,7 @@ module.exports = {
     "functions/**/*",
     "public/**/*",
     "help/*",
+    "service-worker.js",
+    "sw-base.js",
   ],
 };
