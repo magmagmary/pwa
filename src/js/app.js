@@ -8,7 +8,7 @@ const enableNotificationsButtons = document.querySelectorAll(
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("sw.js")
+    .register("service-worker.js") // use sw.js for basic service worker without workbox
     .then((reg) => {
       console.log("Service Worker Registered");
     })
