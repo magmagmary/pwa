@@ -1,16 +1,18 @@
-const { onRequest } = require("firebase-functions/v2/https");
+const functions = require("firebase-functions");
 const logger = require("firebase-functions/logger");
 const admin = require("firebase-admin");
 const cors = require("cors")({ origin: true });
 const webPush = require("web-push");
-const dotenv = require("dotenv");
 const formidable = require("formidable-serverless");
+const { defineSecret } = require("firebase-functions/params");
 
 const BUCKET_NAME = "mgm-pwa.firebasestorage.app";
 
-dotenv.config();
+// the config file is not included in the repo. You should create your own if you need production deployment
+const serviceAccount = require("./mgm-pwa-firebase.json");
 
 admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: "http://127.0.0.1:5002?ns=mgm-pwa-default-rtdb",
 });
 
@@ -23,7 +25,7 @@ const uuidv4 = () => {
   );
 };
 
-exports.getPosts = onRequest((request, response) => {
+exports.getPosts = functions.https.onRequest((request, response) => {
   cors(request, response, () => {
     admin
       .database()
@@ -40,7 +42,7 @@ exports.getPosts = onRequest((request, response) => {
   });
 });
 
-exports.storePost = onRequest((request, response) => {
+exports.storePost = functions.https.onRequest((request, response) => {
   cors(request, response, () => {
     const form = formidable.IncomingForm();
     form.parse(request, (err, fields, files) => {
@@ -84,10 +86,13 @@ exports.storePost = onRequest((request, response) => {
             })
         )
         .then(() => {
+          const VAPID_PUBLIC_KEY = defineSecret("VAPID_PUBLIC_KEY").value();
+          const VAPID_PRIVATE_KEY = defineSecret("VAPID_PRIVATE_KEY").value();
+
           webPush.setVapidDetails(
             "mailto:magmagmary70@gmail.com",
-            process.env.VAPID_PUBLIC_KEY,
-            process.env.VAPID_PRIVATE_KEY
+            VAPID_PUBLIC_KEY,
+            VAPID_PRIVATE_KEY
           );
 
           return admin.database().ref("subscriptions").once("value");
@@ -126,7 +131,7 @@ exports.storePost = onRequest((request, response) => {
   });
 });
 
-exports.storeSubscription = onRequest((request, response) => {
+exports.storeSubscription = functions.https.onRequest((request, response) => {
   cors(request, response, () => {
     admin
       .database()
