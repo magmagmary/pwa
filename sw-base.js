@@ -49,4 +49,30 @@ workboxSW.router.registerRoute(url, (args) => {
   });
 });
 
+// offline page fallback
+workboxSW.router.registerRoute(
+  (route) => {
+    return route.event.request.headers.get("accept").includes("text/html");
+  },
+  (args) => {
+    return caches.match(args.event.request).then((response) => {
+      if (response) {
+        return response;
+      }
+      return fetch(args.event.request)
+        .then((res) => {
+          return caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+            cache.put(args.event.request.url, res.clone());
+            return res;
+          });
+        })
+        .catch(() => {
+          return caches.match("/offline.html").then((res) => {
+            return res;
+          });
+        });
+    });
+  }
+);
+
 workboxSW.precache([]);
