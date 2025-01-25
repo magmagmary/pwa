@@ -111,21 +111,21 @@ self.addEventListener("sync", (event) => {
 self.addEventListener("fetch", (event) => {
   const url = generateUrl("getPosts");
 
-  // if (event.request.url.indexOf(url) > -1) {
-  //   return event.respondWith(
-  //     fetch(event.request).then((res) => {
-  //       const clonedRes = res.clone();
+  if (event.request.url.indexOf(url) > -1) {
+    return event.respondWith(
+      fetch(event.request).then((res) => {
+        const clonedRes = res.clone();
 
-  //       clonedRes.json().then((data) => {
-  //         for (const key in data) {
-  //           writeData(POST_OBJECT_STORE, data[key]);
-  //         }
-  //       });
+        clonedRes.json().then((data) => {
+          for (const key in data) {
+            writeData(POST_OBJECT_STORE, data[key]);
+          }
+        });
 
-  //       return res;
-  //     })
-  //   );
-  // }
+        return res;
+      })
+    );
+  }
 
   // cache only strategy for static assets
   if (isInArray(event.request.url, cachedAssets)) {
