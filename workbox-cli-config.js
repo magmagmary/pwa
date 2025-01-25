@@ -7,5 +7,6 @@ module.exports = {
     "node_modules/**/*",
     "functions/**/*",
     "public/**/*",
+    "help/*",
   ],
 };

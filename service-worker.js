@@ -19,10 +19,6 @@ importScripts('workbox-sw.prod.v2.1.3.js');
  */
 const fileManifest = [
   {
-    "url": "help/index.html",
-    "revision": "3b1b58d8b1b2aa4d8ce1c590a90176e8"
-  },
-  {
     "url": "index.html",
     "revision": "c288c5117911a5543f6b3c155c7f0abc"
   },
@@ -120,7 +116,7 @@ const fileManifest = [
   },
   {
     "url": "src/js/app.js",
-    "revision": "9a564c4b337038cd8f3b284332479da8"
+    "revision": "36c1151523506732dda688babf005224"
   },
   {
     "url": "src/js/backGroundSync.js",
