@@ -23,6 +23,6 @@
 		"background-sync"
 	],
 	"dependencies": {
-		"workbox-cli": "^2.0.0"
+		"workbox-cli": "2.1.3"
 	}
 }
